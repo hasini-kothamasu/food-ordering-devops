@@ -1,125 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Foodie Hub - Online Food Ordering</title>
+  <meta charset="UTF-8">
+  <title>Campus Food Booking System</title>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f5f7fa;
+      background-color: #f4f6f8;
       padding: 20px;
     }
 
     h1, h2, h3 {
       text-align: center;
-      color: #333;
     }
 
     .container {
-      max-width: 750px;
+      max-width: 800px;
       margin: auto;
       background: white;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      animation: fadeIn 0.5s ease-in;
     }
 
-    .section {
-      margin-top: 25px;
-    }
+    .hidden { display: none; }
+
+    .section { margin-top: 20px; }
 
     .item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       margin-bottom: 12px;
     }
 
-    .controls {
-      display: flex;
-      align-items: center;
+    select, input {
+      width: 200px;
+      padding: 6px;
     }
 
-    .controls button {
-      padding: 4px 10px;
-      font-size: 16px;
-      margin: 0 5px;
-      background-color: #28a745;
-      border: none;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .controls button:hover {
-      background-color: #218838;
-    }
-
-    .count {
-      width: 20px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .order-btn {
+    button {
+      padding: 10px;
       width: 100%;
       margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 6px;
       cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
     }
 
-    .order-btn:hover {
-      background-color: #0056b3;
-    }
-
-    .secondary-btn {
+    button.secondary {
       background-color: #6c757d;
     }
 
-    .danger-btn {
-      background-color: #dc3545;
-    }
-
-    .welcome {
+    .info {
+      background: #eef3ff;
+      padding: 10px;
+      margin-bottom: 15px;
       text-align: center;
-      margin-top: 100px;
-    }
-
-    .welcome button {
-      padding: 12px 25px;
-      font-size: 16px;
-      background-color: #ff9800;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .welcome button:hover {
-      background-color: #e68900;
-    }
-
-    .orders {
-      margin-top: 20px;
-      display: none;
-    }
-
-    #successMsg {
-      color: green;
       font-weight: bold;
-      text-align: center;
-      margin-top: 10px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f0f0f0;
     }
   </style>
 </head>
@@ -127,200 +83,237 @@
 <body>
 
 <!-- WELCOME -->
-<div id="welcome" class="welcome">
-  <h1>🍽 Foodie Hub</h1>
-  <p>Delicious food at your fingertips</p>
-  <button onclick="showMenu()">View Menu</button>
+<div id="welcome" class="container">
+  <h1>Campus Food Booking System</h1>
+  <p style="text-align:center;">Pre-book food & collect from campus canteen</p>
+  <button onclick="goToRole()">Proceed</button>
 </div>
 
-<!-- MENU -->
-<div id="menu" style="display:none;">
-  <div class="container">
+<!-- ROLE PAGE -->
+<div id="rolePage" class="container hidden">
+  <h2>Select Role</h2>
+  <select id="role">
+    <option value="">Select Role</option>
+    <option>Student</option>
+    <option>Faculty</option>
+    <option>Admin</option>
+  </select>
+  <button onclick="confirmRole()">Continue</button>
+</div>
 
-    <button class="order-btn secondary-btn" onclick="goBack()">⬅ Back</button>
+<!-- MENU PAGE -->
+<div id="menuPage" class="container hidden">
 
-    <h1>Online Food Ordering System</h1>
+  <h2>Campus Canteen Menu</h2>
 
-    <!-- BIRYANI -->
-    <div class="section">
-      <h2>🍛 Biryani</h2>
-
-      <div class="item">
-        <span>Veg Biryani - ₹120</span>
-        <div class="controls">
-          <button onclick="update('VegBiryani',-1)">−</button>
-          <span id="VegBiryani" class="count">0</span>
-          <button onclick="update('VegBiryani',1)">+</button>
-        </div>
-      </div>
-
-      <div class="item">
-        <span>Chicken Biryani - ₹180</span>
-        <div class="controls">
-          <button onclick="update('ChickenBiryani',-1)">−</button>
-          <span id="ChickenBiryani" class="count">0</span>
-          <button onclick="update('ChickenBiryani',1)">+</button>
-        </div>
-      </div>
-
-      <div class="item">
-        <span>Mutton Biryani - ₹220</span>
-        <div class="controls">
-          <button onclick="update('MuttonBiryani',-1)">−</button>
-          <span id="MuttonBiryani" class="count">0</span>
-          <button onclick="update('MuttonBiryani',1)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SNACKS -->
-    <div class="section">
-      <h2>🍟 Snacks</h2>
-
-      <div class="item">
-        <span>French Fries - ₹70</span>
-        <div class="controls">
-          <button onclick="update('Fries',-1)">−</button>
-          <span id="Fries" class="count">0</span>
-          <button onclick="update('Fries',1)">+</button>
-        </div>
-      </div>
-
-      <div class="item">
-        <span>Veg Roll - ₹50</span>
-        <div class="controls">
-          <button onclick="update('Roll',-1)">−</button>
-          <span id="Roll" class="count">0</span>
-          <button onclick="update('Roll',1)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- BEVERAGES -->
-    <div class="section">
-      <h2>🥤 Beverages</h2>
-
-      <div class="item">
-        <span>Soft Drink - ₹40</span>
-        <div class="controls">
-          <button onclick="update('Drink',-1)">−</button>
-          <span id="Drink" class="count">0</span>
-          <button onclick="update('Drink',1)">+</button>
-        </div>
-      </div>
-
-      <div class="item">
-        <span>Fresh Juice - ₹60</span>
-        <div class="controls">
-          <button onclick="update('Juice',-1)">−</button>
-          <span id="Juice" class="count">0</span>
-          <button onclick="update('Juice',1)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <h3>Total Amount: ₹<span id="total">0</span></h3>
-
-    <button class="order-btn" onclick="placeOrder()">Place Order</button>
-    <button class="order-btn danger-btn" onclick="clearCart()">Clear Cart</button>
-    <button class="order-btn secondary-btn" onclick="toggleOrders()">My Orders</button>
-
-    <p id="successMsg"></p>
-
-    <div class="orders" id="ordersSection">
-      <h3>📦 My Orders</h3>
-      <ul id="orderList"></ul>
-    </div>
-
+  <div class="info">
+    Orders close at 11:30 AM | Pickup from canteen only
   </div>
+
+  <h3>User Details</h3>
+  <input type="text" id="name" placeholder="Name">
+  <input type="text" id="roll" placeholder="Roll Number">
+  <input type="text" id="classroom" placeholder="Classroom / Block">
+
+  <h3>Pickup Time Slot</h3>
+  <select id="slot">
+    <option value="">Select Slot</option>
+    <option>12:00 – 12:15</option>
+    <option>12:15 – 12:30</option>
+    <option>12:30 – 12:45</option>
+  </select>
+
+  <div class="section">
+    <h3>Biryani</h3>
+
+    <div class="item">
+      Veg Biryani (Max 2)
+      <select id="VegBiryani" onchange="calculateTotal()">
+        <option value="0">0</option><option>1</option><option>2</option>
+      </select>
+    </div>
+
+    <div class="item">
+      Chicken Biryani (Max 5)
+      <select id="ChickenBiryani" onchange="calculateTotal()">
+        <option value="0">0</option><option>1</option><option>2</option>
+        <option>3</option><option>4</option><option>5</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Snacks</h3>
+
+    <div class="item">
+      Fries (Max 3)
+      <select id="Fries" onchange="calculateTotal()">
+        <option value="0">0</option><option>1</option><option>2</option><option>3</option>
+      </select>
+    </div>
+
+    <div class="item">
+      Samosa (Max 4)
+      <select id="Samosa" onchange="calculateTotal()">
+        <option value="0">0</option><option>1</option><option>2</option>
+        <option>3</option><option>4</option>
+      </select>
+    </div>
+
+    <div class="item">
+      Dosa (Max 3)
+      <select id="Dosa" onchange="calculateTotal()">
+        <option value="0">0</option><option>1</option><option>2</option><option>3</option>
+      </select>
+    </div>
+  </div>
+
+  <h3>Total Amount: ₹<span id="total">0</span></h3>
+
+  <button onclick="placeOrder()">Place Order</button>
+  <button class="secondary" onclick="cancelOrder()">Cancel Order</button>
+</div>
+
+<!-- SUMMARY PAGE -->
+<div id="summaryPage" class="container hidden">
+  <h2>Order Confirmation</h2>
+
+  <p><b>Order ID:</b> <span id="orderId"></span></p>
+  <p><b>Token:</b> <span id="token"></span></p>
+  <p><b>Status:</b> <span id="status"></span></p>
+
+  <button onclick="markReady()">Mark Ready</button>
+  <button onclick="markCollected()">Mark Collected</button>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="adminPage" class="container hidden">
+  <h2>Admin – Order Summary</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Roll No</th>
+        <th>Classroom</th>
+        <th>Items</th>
+        <th>Token</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="adminTable"></tbody>
+  </table>
+
+  <button onclick="location.reload()">Logout</button>
 </div>
 
 <script>
   const prices = {
-    VegBiryani:120, ChickenBiryani:180, MuttonBiryani:220,
-    Fries:70, Roll:50, Drink:40, Juice:60
+    VegBiryani:120, ChickenBiryani:180,
+    Fries:70, Samosa:20, Dosa:40
   };
 
-  let cart = {};
-  let total = 0;
+  let tokenCounter = 100;
+  let allOrders = [];
+  let currentOrder = null;
 
-  function showMenu() {
-    document.getElementById("welcome").style.display = "none";
-    document.getElementById("menu").style.display = "block";
-    loadOrders();
+  function goToRole() {
+    welcome.classList.add("hidden");
+    rolePage.classList.remove("hidden");
   }
 
-  function goBack() {
-    document.getElementById("menu").style.display = "none";
-    document.getElementById("welcome").style.display = "block";
-  }
+  function confirmRole() {
+    const role = document.getElementById("role").value;
+    if (!role) return alert("Select role");
 
-  function update(item, change) {
-    cart[item] = (cart[item] || 0) + change;
-    if (cart[item] < 0) cart[item] = 0;
-    document.getElementById(item).innerText = cart[item];
-    calculateTotal();
+    rolePage.classList.add("hidden");
+
+    if (role === "Admin") {
+      adminPage.classList.remove("hidden");
+      renderAdmin();
+    } else {
+      menuPage.classList.remove("hidden");
+    }
   }
 
   function calculateTotal() {
-    total = 0;
-    for (let item in cart) {
-      total += cart[item] * prices[item];
-    }
-    document.getElementById("total").innerText = total;
-  }
-
-  function clearCart() {
-    cart = {};
-    for (let item in prices) {
-      document.getElementById(item).innerText = 0;
-    }
-    total = 0;
-    document.getElementById("total").innerText = 0;
+    let t = 0;
+    for (let i in prices)
+      t += document.getElementById(i).value * prices[i];
+    total.innerText = t;
   }
 
   function placeOrder() {
-    if (total === 0) {
-      alert("Please select at least one item");
-      return;
+    const now = new Date();
+    const cutoff = new Date();
+    cutoff.setHours(11,30,0);
+
+    if (now > cutoff) return alert("Booking closed after 11:30 AM");
+
+    const name = document.getElementById("name").value.trim();
+    const roll = document.getElementById("roll").value.trim();
+    const room = document.getElementById("classroom").value.trim();
+    const slot = document.getElementById("slot").value;
+
+    if (!name || !roll || !room || !slot)
+      return alert("Fill all details");
+
+    if (total.innerText == 0)
+      return alert("Select at least one item");
+
+    tokenCounter++;
+
+    let items = [];
+    for (let i in prices) {
+      let q = document.getElementById(i).value;
+      if (q > 0) items.push(i + " x " + q);
     }
 
-    const time = new Date().toLocaleString();
-    let summary = "";
+    currentOrder = {
+      name, roll, room,
+      items: items.join(", "),
+      token: tokenCounter,
+      status: "Booked"
+    };
 
-    for (let item in cart) {
-      if (cart[item] > 0) {
-        summary += item + " x " + cart[item] + ", ";
-      }
-    }
+    allOrders.push(currentOrder);
 
-    const orderText = summary + "Total ₹" + total + " (" + time + ")";
-    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    orders.push(orderText);
-    localStorage.setItem("orders", JSON.stringify(orders));
+    menuPage.classList.add("hidden");
+    summaryPage.classList.remove("hidden");
 
-    document.getElementById("successMsg").innerText =
-      "✅ Order placed successfully!";
-
-    clearCart();
-    loadOrders();
+    orderId.innerText = "ORD-" + tokenCounter;
+    token.innerText = tokenCounter;
+    status.innerText = "Booked";
   }
 
-  function loadOrders() {
-    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-    const list = document.getElementById("orderList");
-    list.innerHTML = "";
-    orders.forEach(order => {
-      const li = document.createElement("li");
-      li.innerText = order;
-      list.appendChild(li);
+  function cancelOrder() {
+    alert("Order cancelled before cut-off");
+    location.reload();
+  }
+
+  function markReady() {
+    currentOrder.status = "Ready";
+    status.innerText = "Ready";
+  }
+
+  function markCollected() {
+    currentOrder.status = "Collected";
+    status.innerText = "Collected";
+  }
+
+  function renderAdmin() {
+    adminTable.innerHTML = "";
+    allOrders.forEach(o => {
+      adminTable.innerHTML += `
+        <tr>
+          <td>${o.name}</td>
+          <td>${o.roll}</td>
+          <td>${o.room}</td>
+          <td>${o.items}</td>
+          <td>${o.token}</td>
+          <td>${o.status}</td>
+        </tr>`;
     });
-  }
-
-  function toggleOrders() {
-    const section = document.getElementById("ordersSection");
-    section.style.display =
-      section.style.display === "none" ? "block" : "none";
   }
 </script>
 
