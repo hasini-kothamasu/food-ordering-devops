@@ -204,18 +204,23 @@
     <tbody id="adminTable"></tbody>
   </table>
 
-  <button onclick="location.reload()">Logout</button>
+  <button onclick="clearAllOrders()" class="secondary">Clear All Orders</button>
+<button onclick="location.reload()">Logout</button>
+
 </div>
 
 <script>
   const prices = {
-    VegBiryani:120, ChickenBiryani:180,
-    Fries:70, Samosa:20, Dosa:40
+    VegBiryani:120,
+    ChickenBiryani:180,
+    Fries:70,
+    Samosa:20,
+    Dosa:40
   };
 
-  let tokenCounter = 100;
-  let allOrders = [];
-  let currentOrder = null;
+  let tokenCounter = Number(localStorage.getItem("token")) || 100;
+  let allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+  let currentOrderIndex = null;
 
   function goToRole() {
     welcome.classList.add("hidden");
@@ -238,15 +243,16 @@
 
   function calculateTotal() {
     let t = 0;
-    for (let i in prices)
+    for (let i in prices) {
       t += document.getElementById(i).value * prices[i];
+    }
     total.innerText = t;
   }
 
   function placeOrder() {
     const now = new Date();
     const cutoff = new Date();
-    cutoff.setHours(11,30,0);
+    cutoff.setHours(18,10,0);
 
     if (now > cutoff) return alert("Booking closed after 11:30 AM");
 
@@ -262,6 +268,7 @@
       return alert("Select at least one item");
 
     tokenCounter++;
+    localStorage.setItem("token", tokenCounter);
 
     let items = [];
     for (let i in prices) {
@@ -269,14 +276,19 @@
       if (q > 0) items.push(i + " x " + q);
     }
 
-    currentOrder = {
-      name, roll, room,
+    const order = {
+      name,
+      roll,
+      room,
       items: items.join(", "),
       token: tokenCounter,
       status: "Booked"
     };
 
-    allOrders.push(currentOrder);
+    allOrders.push(order);
+    currentOrderIndex = allOrders.length - 1;
+
+    localStorage.setItem("orders", JSON.stringify(allOrders));
 
     menuPage.classList.add("hidden");
     summaryPage.classList.remove("hidden");
@@ -290,16 +302,32 @@
     alert("Order cancelled before cut-off");
     location.reload();
   }
+function markReady() {
+  allOrders[currentOrderIndex].status = "Ready";
+  localStorage.setItem("orders", JSON.stringify(allOrders));
+  status.innerText = "Ready";
+  alert("Order marked as READY");
+}
 
-  function markReady() {
-    currentOrder.status = "Ready";
-    status.innerText = "Ready";
-  }
 
   function markCollected() {
-    currentOrder.status = "Collected";
-    status.innerText = "Collected";
-  }
+  allOrders[currentOrderIndex].status = "Collected";
+  localStorage.setItem("orders", JSON.stringify(allOrders));
+  status.innerText = "Collected";
+  alert("Order marked as COLLECTED");
+}
+function clearAllOrders() {
+  const confirmDelete = confirm("Are you sure you want to delete all orders?");
+  if (!confirmDelete) return;
+
+  localStorage.removeItem("orders");
+  allOrders = [];
+  adminTable.innerHTML = "";
+
+  alert("All orders cleared successfully");
+}
+
+
 
   function renderAdmin() {
     adminTable.innerHTML = "";
