@@ -1,349 +1,253 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Campus Food Booking System</title>
+<meta charset="UTF-8">
+<title>Campus Food Booking System</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      padding: 20px;
-    }
-
-    h1, h2, h3 {
-      text-align: center;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .hidden { display: none; }
-
-    .section { margin-top: 20px; }
-
-    .item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    select, input {
-      width: 200px;
-      padding: 6px;
-    }
-
-    button {
-      padding: 10px;
-      width: 100%;
-      margin-top: 10px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-    }
-
-    button.secondary {
-      background-color: #6c757d;
-    }
-
-    .info {
-      background: #eef3ff;
-      padding: 10px;
-      margin-bottom: 15px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f0f0f0;
-    }
-  </style>
+<style>
+body {font-family: Arial;background:#f4f6f8;padding:20px;}
+.container {max-width:800px;margin:auto;background:white;padding:20px;border-radius:8px;}
+.hidden {display:none;}
+select,input {width:200px;padding:6px;margin:5px;}
+button {padding:10px;width:100%;margin-top:10px;border:none;background:#007bff;color:white;}
+table {width:100%;margin-top:15px;border-collapse:collapse;}
+th,td {border:1px solid #ccc;padding:6px;text-align:center;}
+</style>
 </head>
 
 <body>
 
-<!-- WELCOME -->
-<div id="welcome" class="container">
-  <h1>Campus Food Booking System</h1>
-  <p style="text-align:center;">Pre-book food & collect from campus canteen</p>
-  <button onclick="goToRole()">Proceed</button>
+<!-- START PAGE -->
+<div id="startPage" class="container">
+<h1 style="text-align:center;">🍽 Campus Food Booking System</h1>
+<button onclick="goToLogin()">Get Started</button>
 </div>
 
-<!-- ROLE PAGE -->
-<div id="rolePage" class="container hidden">
-  <h2>Select Role</h2>
-  <select id="role">
-    <option value="">Select Role</option>
-    <option>Student</option>
-    <option>Faculty</option>
-    <option>Admin</option>
-  </select>
-  <button onclick="confirmRole()">Continue</button>
+<!-- LOGIN -->
+<div id="loginPage" class="container hidden">
+<h2>Login</h2>
+<select id="loginRole">
+<option value="">Select Role</option>
+<option>Student</option>
+<option>Faculty</option>
+<option>Admin</option>
+</select><br>
+<input type="text" id="username" placeholder="Username"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="loginUser()">Login</button>
 </div>
 
-<!-- MENU PAGE -->
+<!-- MENU -->
 <div id="menuPage" class="container hidden">
+<h2>Food Booking</h2>
 
-  <h2>Campus Canteen Menu</h2>
+<input id="name" placeholder="Name">
+<input id="roll" placeholder="Roll Number">
+<input id="classroom" placeholder="Classroom">
 
-  <div class="info">
-    Orders close at 11:30 AM | Pickup from canteen only
-  </div>
+<select id="slot">
+<option value="">Pickup Slot</option>
+<option>12:00 – 12:15</option>
+<option>12:15 – 12:30</option>
+<option>12:30 – 12:45</option>
+</select>
 
-  <h3>User Details</h3>
-  <input type="text" id="name" placeholder="Name">
-  <input type="text" id="roll" placeholder="Roll Number">
-  <input type="text" id="classroom" placeholder="Classroom / Block">
+<h3>Biryani</h3>
 
-  <h3>Pickup Time Slot</h3>
-  <select id="slot">
-    <option value="">Select Slot</option>
-    <option>12:00 – 12:15</option>
-    <option>12:15 – 12:30</option>
-    <option>12:30 – 12:45</option>
-  </select>
+Veg Biryani (₹120)
+<select id="VegBiryani" onchange="calculateTotal()">
+<option>0</option><option>1</option><option>2</option>
+</select>
 
-  <div class="section">
-    <h3>Biryani</h3>
+Chicken Biryani (₹180)
+<select id="ChickenBiryani" onchange="calculateTotal()">
+<option>0</option><option>1</option><option>2</option>
+<option>3</option><option>4</option><option>5</option>
+</select>
 
-    <div class="item">
-      Veg Biryani (Max 2)
-      <select id="VegBiryani" onchange="calculateTotal()">
-        <option value="0">0</option><option>1</option><option>2</option>
-      </select>
-    </div>
+<h3>Snacks</h3>
 
-    <div class="item">
-      Chicken Biryani (Max 5)
-      <select id="ChickenBiryani" onchange="calculateTotal()">
-        <option value="0">0</option><option>1</option><option>2</option>
-        <option>3</option><option>4</option><option>5</option>
-      </select>
-    </div>
-  </div>
+Fries (₹70)
+<select id="Fries" onchange="calculateTotal()">
+<option>0</option><option>1</option><option>2</option><option>3</option>
+</select>
 
-  <div class="section">
-    <h3>Snacks</h3>
+Samosa (₹20)
+<select id="Samosa" onchange="calculateTotal()">
+<option>0</option><option>1</option><option>2</option><option>3</option><option>4</option>
+</select>
 
-    <div class="item">
-      Fries (Max 3)
-      <select id="Fries" onchange="calculateTotal()">
-        <option value="0">0</option><option>1</option><option>2</option><option>3</option>
-      </select>
-    </div>
+Dosa (₹40)
+<select id="Dosa" onchange="calculateTotal()">
+<option>0</option><option>1</option><option>2</option><option>3</option>
+</select>
 
-    <div class="item">
-      Samosa (Max 4)
-      <select id="Samosa" onchange="calculateTotal()">
-        <option value="0">0</option><option>1</option><option>2</option>
-        <option>3</option><option>4</option>
-      </select>
-    </div>
+<h3>Total ₹<span id="total">0</span></h3>
 
-    <div class="item">
-      Dosa (Max 3)
-      <select id="Dosa" onchange="calculateTotal()">
-        <option value="0">0</option><option>1</option><option>2</option><option>3</option>
-      </select>
-    </div>
-  </div>
+<button onclick="placeOrder()">Place Order</button>
+<button onclick="goToTrack()">Track Order</button>
 
-  <h3>Total Amount: ₹<span id="total">0</span></h3>
-
-  <button onclick="placeOrder()">Place Order</button>
-  <button class="secondary" onclick="cancelOrder()">Cancel Order</button>
 </div>
 
-<!-- SUMMARY PAGE -->
+<!-- SUMMARY -->
 <div id="summaryPage" class="container hidden">
-  <h2>Order Confirmation</h2>
-
-  <p><b>Order ID:</b> <span id="orderId"></span></p>
-  <p><b>Token:</b> <span id="token"></span></p>
-  <p><b>Status:</b> <span id="status"></span></p>
-
-  <button onclick="markReady()">Mark Ready</button>
-  <button onclick="markCollected()">Mark Collected</button>
+<h2>Order Placed</h2>
+<p>Order ID: <span id="orderId"></span></p>
+<p>Token: <span id="token"></span></p>
+<p>Status: <span id="status"></span></p>
 </div>
 
-<!-- ADMIN PAGE -->
+<!-- TRACK -->
+<div id="trackPage" class="container hidden">
+<h2>Track Your Order</h2>
+<input id="trackToken" placeholder="Enter Token Number">
+<button onclick="trackOrder()">Check Status</button>
+<h3>Status: <span id="trackStatus">-</span></h3>
+</div>
+
+<!-- ADMIN -->
 <div id="adminPage" class="container hidden">
-  <h2>Admin – Order Summary</h2>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Roll No</th>
-        <th>Classroom</th>
-        <th>Items</th>
-        <th>Token</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="adminTable"></tbody>
-  </table>
-
-  <button onclick="clearAllOrders()" class="secondary">Clear All Orders</button>
-<button onclick="location.reload()">Logout</button>
-
+<h2>Admin Panel</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Roll</th>
+<th>Room</th>
+<th>Items</th>
+<th>Total ₹</th>
+<th>Token</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="adminTable"></tbody>
+</table>
+<button onclick="clearAllOrders()">Clear Orders</button>
 </div>
 
 <script>
-  const prices = {
-    VegBiryani:120,
-    ChickenBiryani:180,
-    Fries:70,
-    Samosa:20,
-    Dosa:40
-  };
 
-  let tokenCounter = Number(localStorage.getItem("token")) || 100;
-  let allOrders = JSON.parse(localStorage.getItem("orders")) || [];
-  let currentOrderIndex = null;
-
-  function goToRole() {
-    welcome.classList.add("hidden");
-    rolePage.classList.remove("hidden");
-  }
-
-  function confirmRole() {
-    const role = document.getElementById("role").value;
-    if (!role) return alert("Select role");
-
-    rolePage.classList.add("hidden");
-
-    if (role === "Admin") {
-      adminPage.classList.remove("hidden");
-      renderAdmin();
-    } else {
-      menuPage.classList.remove("hidden");
-    }
-  }
-
-  function calculateTotal() {
-    let t = 0;
-    for (let i in prices) {
-      t += document.getElementById(i).value * prices[i];
-    }
-    total.innerText = t;
-  }
-
-  function placeOrder() {
-    const now = new Date();
-    const cutoff = new Date();
-    cutoff.setHours(18,10,0);
-
-    if (now > cutoff) return alert("Booking closed after 11:30 AM");
-
-    const name = document.getElementById("name").value.trim();
-    const roll = document.getElementById("roll").value.trim();
-    const room = document.getElementById("classroom").value.trim();
-    const slot = document.getElementById("slot").value;
-
-    if (!name || !roll || !room || !slot)
-      return alert("Fill all details");
-
-    if (total.innerText == 0)
-      return alert("Select at least one item");
-
-    tokenCounter++;
-    localStorage.setItem("token", tokenCounter);
-
-    let items = [];
-    for (let i in prices) {
-      let q = document.getElementById(i).value;
-      if (q > 0) items.push(i + " x " + q);
-    }
-
-    const order = {
-      name,
-      roll,
-      room,
-      items: items.join(", "),
-      token: tokenCounter,
-      status: "Booked"
-    };
-
-    allOrders.push(order);
-    currentOrderIndex = allOrders.length - 1;
-
-    localStorage.setItem("orders", JSON.stringify(allOrders));
-
-    menuPage.classList.add("hidden");
-    summaryPage.classList.remove("hidden");
-
-    orderId.innerText = "ORD-" + tokenCounter;
-    token.innerText = tokenCounter;
-    status.innerText = "Booked";
-  }
-
-  function cancelOrder() {
-    alert("Order cancelled before cut-off");
-    location.reload();
-  }
-function markReady() {
-  allOrders[currentOrderIndex].status = "Ready";
-  localStorage.setItem("orders", JSON.stringify(allOrders));
-  status.innerText = "Ready";
-  alert("Order marked as READY");
+function goToLogin(){
+startPage.classList.add("hidden");
+loginPage.classList.remove("hidden");
 }
 
-
-  function markCollected() {
-  allOrders[currentOrderIndex].status = "Collected";
-  localStorage.setItem("orders", JSON.stringify(allOrders));
-  status.innerText = "Collected";
-  alert("Order marked as COLLECTED");
-}
-function clearAllOrders() {
-  const confirmDelete = confirm("Are you sure you want to delete all orders?");
-  if (!confirmDelete) return;
-
-  localStorage.removeItem("orders");
-  allOrders = [];
-  adminTable.innerHTML = "";
-
-  alert("All orders cleared successfully");
+function goToTrack(){
+menuPage.classList.add("hidden");
+trackPage.classList.remove("hidden");
 }
 
+const prices={VegBiryani:120,ChickenBiryani:180,Fries:70,Samosa:20,Dosa:40};
 
+let tokenCounter=Number(localStorage.getItem("token"))||100;
+let allOrders=JSON.parse(localStorage.getItem("orders"))||[];
 
-  function renderAdmin() {
-    adminTable.innerHTML = "";
-    allOrders.forEach(o => {
-      adminTable.innerHTML += `
-        <tr>
-          <td>${o.name}</td>
-          <td>${o.roll}</td>
-          <td>${o.room}</td>
-          <td>${o.items}</td>
-          <td>${o.token}</td>
-          <td>${o.status}</td>
-        </tr>`;
-    });
-  }
+function loginUser(){
+let role=document.getElementById("loginRole").value;
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
+
+if(!role||!user||!pass)return alert("Fill all details");
+
+loginPage.classList.add("hidden");
+
+if(role==="Admin"){
+adminPage.classList.remove("hidden");
+renderAdmin();
+}else{
+menuPage.classList.remove("hidden");
+}
+}
+
+function calculateTotal(){
+let t=0;
+for(let i in prices){
+t+=document.getElementById(i).value*prices[i];
+}
+total.innerText=t;
+}
+
+function placeOrder(){
+
+let name=document.getElementById("name").value;
+let roll=document.getElementById("roll").value;
+let room=document.getElementById("classroom").value;
+let slot=document.getElementById("slot").value;
+
+if(!name||!roll||!room||!slot)return alert("Fill details");
+if(total.innerText==0)return alert("Select item");
+
+tokenCounter++;
+localStorage.setItem("token",tokenCounter);
+
+let items=[]; let totalCost=0;
+for(let i in prices){
+let q=document.getElementById(i).value;
+if(q>0){
+items.push(i+" x "+q);
+totalCost+=q*prices[i];
+}
+}
+
+let order={name,roll,room,items:items.join(", "),cost:totalCost,token:tokenCounter,status:"Booked"};
+
+allOrders.push(order);
+localStorage.setItem("orders",JSON.stringify(allOrders));
+
+menuPage.classList.add("hidden");
+summaryPage.classList.remove("hidden");
+
+orderId.innerText="ORD-"+tokenCounter;
+token.innerText=tokenCounter;
+status.innerText="Booked";
+}
+
+function trackOrder(){
+let t=document.getElementById("trackToken").value;
+let order=allOrders.find(o=>o.token==t);
+trackStatus.innerText=order?order.status:"Invalid Token";
+}
+
+function renderAdmin(){
+adminTable.innerHTML="";
+allOrders.forEach((o,i)=>{
+adminTable.innerHTML+=`
+<tr>
+<td>${o.name}</td>
+<td>${o.roll}</td>
+<td>${o.room}</td>
+<td>${o.items}</td>
+<td>${o.cost}</td>
+<td>${o.token}</td>
+<td>${o.status}</td>
+<td>
+<button onclick="markReady(${i})">Ready</button>
+<button onclick="markCollected(${i})">Collected</button>
+</td>
+</tr>`;
+});
+}
+
+function markReady(i){
+allOrders[i].status="Ready";
+localStorage.setItem("orders",JSON.stringify(allOrders));
+renderAdmin();
+}
+
+function markCollected(i){
+allOrders[i].status="Collected";
+localStorage.setItem("orders",JSON.stringify(allOrders));
+renderAdmin();
+}
+
+function clearAllOrders(){
+if(!confirm("Delete all orders?"))return;
+localStorage.removeItem("orders");
+allOrders=[];
+renderAdmin();
+}
+
 </script>
-
 </body>
 </html>
